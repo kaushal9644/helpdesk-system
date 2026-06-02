@@ -33,6 +33,7 @@ com\helpdesk\service\storage\StoredFile.class
 com\helpdesk\dto\response\AttachmentResponse.class
 com\helpdesk\service\impl\UserServiceImpl.class
 com\helpdesk\security\UserPrincipal.class
+com\helpdesk\service\storage\LocalFileStorageService.class
 com\helpdesk\controller\CommentController.class
 com\helpdesk\exception\BadRequestException.class
 com\helpdesk\entity\Attachment$AttachmentBuilder.class

@@ -54,11 +54,13 @@ D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\Attachment
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\AuthService.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\CommentService.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\impl\AttachmentServiceImpl.java
+D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\impl\AuthServiceImpl.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\impl\CommentServiceImpl.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\impl\TicketAccessHelper.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\impl\TicketServiceImpl.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\impl\UserServiceImpl.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\storage\FileStorageService.java
+D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\storage\LocalFileStorageService.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\storage\StoredFile.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\TicketService.java
 D:\project\helpdesk-system\backend\src\main\java\com\helpdesk\service\UserService.java
