@@ -1,0 +1,15 @@
+# Maven
+target/
+backend/target/
+
+# Logs
+*.log
+error.log
+full.log
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
