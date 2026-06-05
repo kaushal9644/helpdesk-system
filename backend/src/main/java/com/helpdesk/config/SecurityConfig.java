@@ -87,7 +87,7 @@ public class SecurityConfig {
                         // Preflight OPTIONS must succeed for CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Login and health check without token
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         // Everything else needs Authentication in SecurityContext
                        .requestMatchers("/api/attachments/*/download").permitAll()
