@@ -21,7 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import com.helpdesk.security.JwtAuthenticationEntryPoint;
 import com.helpdesk.security.JwtAuthenticationFilter;
 import com.helpdesk.security.CustomUserDetailsService;
-
+import org.springframework.core.annotation.Order;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -53,12 +53,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-@Bean
-public WebSecurityCustomizer webSecurityCustomizer() {
-    return web -> web.ignoring()
-            .requestMatchers("/api/auth/**")
-            .requestMatchers("/actuator/health");
-}
+
     /**
      * Connects {@link CustomUserDetailsService} + {@link PasswordEncoder} for username/password login.
      */
@@ -75,32 +70,37 @@ public WebSecurityCustomizer webSecurityCustomizer() {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // CSRF protection uses sessions/cookies; disabled for stateless JWT APIs
-                .csrf(AbstractHttpConfigurer::disable)
-                // Use CORS rules from CorsConfig
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                // JWT = no server-side session
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(ex ->
-                        ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .authorizeHttpRequests(auth -> auth
-                        // Preflight OPTIONS must succeed for CORS
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Login and health check without token
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
-                        // Everything else needs Authentication in SecurityContext
-                       .requestMatchers("/api/attachments/*/download").permitAll()
-                        .anyRequest().authenticated())
-                .authenticationProvider(authenticationProvider())
-                // Run JWT filter before Spring's default username/password filter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+@Order(1)
+public SecurityFilterChain authSecurityFilterChain(HttpSecurity http) throws Exception {
+    return http
+            .securityMatcher("/api/auth/**")
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+            .authorizeHttpRequests(auth -> auth
+                    .anyRequest().permitAll()
+            )
+            .build();
+}
 
-        return http.build();
-    }
+   @Bean
+@Order(2)
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(ex ->
+                    ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/api/attachments/*/download").permitAll()
+                    .anyRequest().authenticated())
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
 }
