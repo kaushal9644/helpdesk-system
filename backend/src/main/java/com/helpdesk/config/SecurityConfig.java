@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import com.helpdesk.security.JwtAuthenticationEntryPoint;
 import com.helpdesk.security.JwtAuthenticationFilter;
 import com.helpdesk.security.CustomUserDetailsService;
@@ -53,7 +53,12 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+@Bean
+public WebSecurityCustomizer webSecurityCustomizer() {
+    return web -> web.ignoring()
+            .requestMatchers("/api/auth/**")
+            .requestMatchers("/actuator/health");
+}
     /**
      * Connects {@link CustomUserDetailsService} + {@link PasswordEncoder} for username/password login.
      */
