@@ -1,0 +1,104 @@
+.employee-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #0f172a;
+  color: white;
+}
+
+/* Sidebar */
+
+.sidebar {
+  width: 250px;
+  background: #020617;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid #1e293b;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar button {
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.sidebar button:hover {
+  background: #2563eb;
+}
+
+.logout-btn {
+  margin-top: auto;
+  background: #dc2626 !important;
+}
+
+/* Main Content */
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+}
+
+/* Create Ticket */
+
+.ticket-form {
+  max-width: 700px;
+  background: #111827;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.ticket-form h1 {
+  margin-bottom: 20px;
+}
+
+.ticket-form input,
+.ticket-form textarea {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: white;
+  font-size: 15px;
+}
+
+.ticket-form button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* History */
+
+.history-section h1 {
+  margin-bottom: 20px;
+}
+
+.ticket-card {
+  background: #111827;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 5px solid #2563eb;
+}
+
+.ticket-card h3 {
+  margin-bottom: 10px;
+}

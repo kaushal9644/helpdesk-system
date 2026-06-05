@@ -2,14 +2,21 @@
 target/
 backend/target/
 
+# Uploads
+backend/uploads/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
 # Logs
 *.log
 error.log
 full.log
 
-# Node
-node_modules/
-
 # IDE
 .vscode/
 .idea/
+
+# Env
+.env
