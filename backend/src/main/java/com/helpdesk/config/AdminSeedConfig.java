@@ -19,7 +19,7 @@ public class AdminSeedConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        String email = "kaushal@kathiawarstores.com";
+        String email = "admin@kathiawarstores.com";
 
         if (userRepository.findByEmailIgnoreCase(email).isEmpty()) {
             User admin = User.builder()
