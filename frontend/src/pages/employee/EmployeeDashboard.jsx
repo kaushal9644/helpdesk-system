@@ -48,7 +48,7 @@ const loggedInUserName = localStorage.getItem("name") || "Employee";
     try {
 
       const response = await axios.get(
-        "http://localhost:8080/api/tickets/my",
+        `${import.meta.env.VITE_API_URL}/api/tickets/my`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ const loggedInUserName = localStorage.getItem("name") || "Employee";
   try {
 
     const response = await axios.get(
-      "http://localhost:8080/api/users/me",
+       `${import.meta.env.VITE_API_URL}/api/users/me`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -169,7 +169,7 @@ const captureScreenshot = async () => {
 
       // Create Ticket
       const ticketResponse = await axios.post(
-        "http://localhost:8080/api/tickets",
+        `${import.meta.env.VITE_API_URL}/api/tickets`,
         {
           title,
           description,
@@ -193,7 +193,7 @@ const captureScreenshot = async () => {
         formData.append("files", file);
 
         await axios.post(
-          `http://localhost:8080/api/attachments/upload/${ticketId}`,
+          `${import.meta.env.VITE_API_URL}/api/attachments/upload/${ticketId}`,
           formData,
           {
             headers: {
@@ -250,7 +250,7 @@ const loadComments = async (ticketId) => {
   try {
 
     const response = await axios.get(
-      `http://localhost:8080/api/comments/ticket/${ticketId}`,
+      `${import.meta.env.VITE_API_URL}/api/comments/ticket/${ticketId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -278,7 +278,7 @@ const addComment = async (ticketId) => {
   try {
 
     await axios.post(
-      "http://localhost:8080/api/comments",
+      `${import.meta.env.VITE_API_URL}/api/comments`,
       {
         ticketId,
         comment: newComment[ticketId],
@@ -330,7 +330,7 @@ const updateProfile = async () => {
   try {
 
     await axios.put(
-      "http://localhost:8080/api/users/me",
+      `${import.meta.env.VITE_API_URL}/api/users/me`,
       {
         name: profileName,
         password: profilePassword,
@@ -366,7 +366,7 @@ const updateProfile = async () => {
     try {
 
       const response = await axios.get(
-        `http://localhost:8080/api/attachments/${attachmentId}/download`,
+        `${import.meta.env.VITE_API_URL}/api/attachments/${attachmentId}/download`,
         {
           responseType: "blob",
           headers: {
