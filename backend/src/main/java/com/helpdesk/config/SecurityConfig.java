@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+
 import com.helpdesk.security.JwtAuthenticationEntryPoint;
 import com.helpdesk.security.JwtAuthenticationFilter;
 import com.helpdesk.security.CustomUserDetailsService;
@@ -95,7 +95,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                     ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/", "/error", "/actuator/health").permitAll()
                     .requestMatchers("/api/attachments/*/download").permitAll()
                     .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider())
