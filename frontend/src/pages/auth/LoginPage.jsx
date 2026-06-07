@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Shield ,Eye, EyeOff} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import PuffLoader from "react-spinners/PuffLoader";
 
 function LoginPage() {
 
@@ -11,44 +11,36 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 const [showPassword, setShowPassword] = useState(false);
-  const handleLogin = async () => {
+const [loading, setLoading] = useState(false); 
+const handleLogin = async () => {
+  if (loading) return;
 
-    try {
+  setLoading(true);
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          email,
-          password
-        }
-      );
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/auth/login`,
+      { email, password }
+    );
 
-      console.log(response.data);
+    const token = response.data.data.accessToken;
+    const role = response.data.data.user.role;
 
-      const token = response.data.data.accessToken;
-      const role = response.data.data.user.role;
-      
-    localStorage.setItem(
-  "token",
-  response.data.data.accessToken
-);
+    localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
 
-localStorage.setItem(
-  "role",
-  response.data.data.user.role
-);
-
-      if (role === "ADMIN") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/employee-dashboard");
-      }
-
-    } catch (error) {
-      console.log(error);
-      alert("Invalid Credentials");
+    if (role === "ADMIN") {
+      navigate("/admin-dashboard");
+    } else {
+      navigate("/employee-dashboard");
     }
-  };
+  } catch (error) {
+    console.log(error);
+    alert("Invalid Credentials");
+  } finally {
+    setLoading(false);
+  }
+};
 useEffect(() => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -189,6 +181,11 @@ return (
       .adm-login-btn:active {
         transform: scale(0.98);
       }
+        .adm-login-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
     `}</style>
 
     <div className="adm-login-root">
@@ -239,10 +236,24 @@ return (
 
           {/* Secure Login Button yahan hoga... */}
 
-          <button onClick={handleLogin} className="adm-login-btn" style={{ marginTop: '8px' }}>
-            <Shield size={18} />
-            Secure Login
-          </button>
+          <button
+  onClick={handleLogin}
+  className="adm-login-btn"
+  style={{ marginTop: "8px" }}
+  disabled={loading}
+>
+  {loading ? (
+    <>
+      <PuffLoader size={22} color="#fff" />
+      Logging in...
+    </>
+  ) : (
+    <>
+      <Shield size={18} />
+      Secure Login
+    </>
+  )}
+</button>
         </div>
         <p
   onClick={() =>
