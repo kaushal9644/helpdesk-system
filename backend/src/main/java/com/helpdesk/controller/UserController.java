@@ -51,19 +51,19 @@ public class UserController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
         return ResponseEntity.ok(ApiResponse.ok(userService.getAllUsers()));
     }
 
     @GetMapping("/admins")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllAdmins() {
         return ResponseEntity.ok(ApiResponse.ok(userService.getAllAdmins()));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.ok(userService.getUserById(id)));
     }
@@ -75,7 +75,7 @@ public class UserController {
 
 
 @PostMapping
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<ApiResponse<UserResponse>> createEmployee(
         @RequestBody CreateUserRequest request) {
 
@@ -85,7 +85,7 @@ public ResponseEntity<ApiResponse<UserResponse>> createEmployee(
 }
 
 @DeleteMapping("/{id}")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<ApiResponse<String>> deleteUser(
         @PathVariable Long id) {
 
