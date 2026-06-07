@@ -54,7 +54,11 @@ const [profileConfirmPassword, setProfileConfirmPassword] = useState("");
   const [branchFilter, setBranchFilter] = useState("");
   const [role, setRole] = useState("EMPLOYEE");
   
-
+const [createLoading, setCreateLoading] = useState(false);
+const [deleteLoading, setDeleteLoading] = useState(null);
+const [statusLoading, setStatusLoading] = useState(null);
+const [commentLoading, setCommentLoading] = useState(null);
+const [profileLoading, setProfileLoading] = useState(false);
 
   
   const [searchTerm, setSearchTerm] = useState("");
@@ -120,6 +124,9 @@ const updateProfile = async () => {
       return;
     }
   }
+ if (profileLoading) return;
+
+  setProfileLoading(true);
 
   try {
 
@@ -148,6 +155,9 @@ const updateProfile = async () => {
   } catch (error) {
     console.log(error);
     alert("Failed to update profile");
+  }
+  finally {
+    setProfileLoading(false);
   }
 };
   const loadComments = async (ticketId) => {
@@ -198,6 +208,8 @@ useEffect(() => {
 
   // Create Employee
   const createEmployee = async () => {
+      if (createLoading) return;
+      setCreateLoading(true);
     try {
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/users`,
@@ -215,10 +227,16 @@ useEffect(() => {
       console.log(error);
       alert("Failed to create employee");
     }
+     finally {
+    setCreateLoading(false);
+  }
   };
 
   // Delete Employee
   const deleteEmployee = async (id) => {
+     if (deleteLoading === id) return;
+
+  setDeleteLoading(id);
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -231,10 +249,14 @@ useEffect(() => {
       console.log(error);
       alert("Failed to delete employee");
     }
+    finally {
+    setDeleteLoading(null);
+  }
   };
 
   // Update Ticket Status
   const updateTicketStatus = async (ticketId, status) => {
+    setStatusLoading(ticketId);
     try {
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/api/tickets/${ticketId}/status`,
@@ -246,6 +268,9 @@ useEffect(() => {
       console.log(error);
       alert("Failed to update status");
     }
+    finally {
+    setStatusLoading(null);
+  }
   };
 
     // comments functions
@@ -1069,7 +1094,13 @@ return (
       <input className="adm-form-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="off"/>
     </div>
     <div style={{ display: 'flex', gap: 10 }}>
-      <button className="adm-add-btn" onClick={createEmployee}>Submit</button>
+      <button
+  className="adm-add-btn"
+  onClick={createEmployee}
+  disabled={createLoading}
+>
+  {createLoading ? "Creating..." : "Submit"}
+</button>
       <button className="adm-attach-btn" style={{ padding: '8px 18px', fontSize: 12 }} onClick={() => { setShowAddForm(false); setName(""); setEmail(""); setPassword(""); }}>
         Cancel
       </button>
@@ -1183,9 +1214,10 @@ return (
      <button
   className="adm-add-btn"
   onClick={updateProfile}
+  disabled={profileLoading}
 >
-        Update Profile
-      </button>
+  {profileLoading ? "Updating..." : "Update Profile"}
+</button>
     </div>
   </div>
 )}

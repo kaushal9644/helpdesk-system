@@ -39,11 +39,12 @@ const [profileConfirmPassword, setProfileConfirmPassword] = useState("");
 const [newComment, setNewComment] = useState({});
 const loggedInUserName = localStorage.getItem("name") || "Employee";
   const token = localStorage.getItem("token");
-
+const [ticketLoading, setTicketLoading] = useState(false);
+const [profileLoading, setProfileLoading] = useState(false);
   // Load Tickets
   const loadTickets = async () => {
 
-    setLoading(true);
+    setTicketLoading(true);
 
     try {
 
@@ -58,14 +59,15 @@ const loggedInUserName = localStorage.getItem("name") || "Employee";
       console.log(response.data);
       setTickets(response.data.data.content || []);
 
-      setLoading(false);
+      
 
     } catch (error) {
 
       console.log(error);
 
-      setLoading(false);
+      
     }
+    finally {setTicketLoading(false);}
   };
 
   const loadProfile = async () => {
@@ -326,7 +328,9 @@ const updateProfile = async () => {
       return;
     }
   }
+ if (profileLoading) return;
 
+  setProfileLoading(true);
   try {
 
     await axios.put(
@@ -356,6 +360,11 @@ const updateProfile = async () => {
     console.log(error);
 
     alert("Failed to update profile");
+
+  }
+  finally {
+
+    setProfileLoading(false);
 
   }
 };
@@ -443,6 +452,13 @@ return (
   <>
     <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.adm-add-btn:disabled,
+.adm-chat-send:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
 
       .adm-root {
         font-family: 'Inter', sans-serif;
@@ -819,12 +835,12 @@ return (
 )}
            
             <button
-              type="submit"
-              disabled={loading}
-              className="adm-add-btn"
-              style={{ marginTop: '8px' }}
-            >
-              {loading ? "Submitting..." : "Submit Ticket"}
+                type="submit"
+                disabled={ticketLoading}
+                className="adm-add-btn"
+                style={{ marginTop: "8px" }}
+              >
+                {ticketLoading ? "Creating Ticket..." : "Submit Ticket"}
             </button>
           </form>
         </div>
@@ -1030,12 +1046,13 @@ return (
         onChange={(e) => setProfileConfirmPassword(e.target.value)}
       />
 
-      <button
-  className="adm-add-btn"
-  onClick={updateProfile}
->
-  Update Profile
-</button>
+              <button
+          className="adm-add-btn"
+          onClick={updateProfile}
+          disabled={profileLoading}
+        >
+          {profileLoading ? "Updating..." : "Update Profile"}
+        </button>
 
     </div>
   </div>
