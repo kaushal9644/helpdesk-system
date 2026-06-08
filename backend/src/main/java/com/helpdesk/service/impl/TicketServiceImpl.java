@@ -116,7 +116,9 @@ public class TicketServiceImpl implements TicketService {
         UserPrincipal actorPrincipal = requireCurrentUser();
         TicketAccessHelper.requireAdmin(actorPrincipal);
 
-        Ticket ticket = findTicketOrThrow(ticketId);
+        Ticket ticket = ticketRepository.findByIdWithChildren(ticketId)
+        .orElseThrow(() -> new ResourceNotFoundException(
+                "Ticket not found with id: " + ticketId));
         User actor = userRepository.findById(actorPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -227,7 +229,13 @@ public int deleteResolvedTicketsOlderThan(int days) {
 
     int count = tickets.size();
 
-    ticketRepository.deleteAll(tickets);
+    for (Ticket ticket : tickets) {
+    Ticket loadedTicket = ticketRepository.findByIdWithChildren(ticket.getId())
+            .orElseThrow(() -> new ResourceNotFoundException(
+                    "Ticket not found with id: " + ticket.getId()));
+
+    ticketRepository.delete(loadedTicket);
+}
 
     return count;
 }

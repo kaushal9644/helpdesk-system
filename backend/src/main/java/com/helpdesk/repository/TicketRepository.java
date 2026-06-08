@@ -41,6 +41,13 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             WHERE t.id = :id
             """)      
     Optional<Ticket> findByIdWithDetails(@Param("id") Long id);
+    @Query("""
+        SELECT DISTINCT t FROM Ticket t
+        LEFT JOIN FETCH t.attachments
+        LEFT JOIN FETCH t.comments
+        WHERE t.id = :id
+        """)
+        Optional<Ticket> findByIdWithChildren(@Param("id") Long id);
 
     long countByStatus(TicketStatus status);
 }

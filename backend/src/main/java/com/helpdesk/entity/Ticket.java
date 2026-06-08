@@ -65,13 +65,13 @@ public class Ticket {
     @Column(nullable = false, length = 20)
     private Priority priority;
     
-    @Builder.Default
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<Attachment> attachments = new ArrayList<>();
+   @Builder.Default
+@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Attachment> attachments = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+@Builder.Default
+@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "branch_id", nullable = false)

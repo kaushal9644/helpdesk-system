@@ -524,6 +524,22 @@ return (
     {tickets.length}
   </span>
 </div>
+  <button
+                        className="adm-attach-btn"
+                        disabled={bulkDeleteLoading}
+                        onClick={() => deleteResolvedOlderThan(15)}
+                      >
+                        {bulkDeleteLoading ? "Deleting..." : "Delete 15+ Days"}
+                      </button>
+
+                      <button
+                        className="adm-attach-btn"
+                        disabled={bulkDeleteLoading}
+                        onClick={() => deleteResolvedOlderThan(30)}
+                      >
+                        {bulkDeleteLoading ? "Deleting..." : "Delete 30+ Days"}
+                      </button>
+
           </nav>
           <div className="adm-logout">
             <button onClick={() => { localStorage.clear(); window.location.href = "/"; }}>
@@ -951,21 +967,7 @@ return (
                   <Ticket size={15} color="#6366f1" />
                   <h2>All Tickets</h2>
                   <span className="adm-count-badge">{tickets.length} total
-                    <button
-                        className="adm-attach-btn"
-                        disabled={bulkDeleteLoading}
-                        onClick={() => deleteResolvedOlderThan(15)}
-                      >
-                        {bulkDeleteLoading ? "Deleting..." : "Delete 15+ Days"}
-                      </button>
-
-                      <button
-                        className="adm-attach-btn"
-                        disabled={bulkDeleteLoading}
-                        onClick={() => deleteResolvedOlderThan(30)}
-                      >
-                        {bulkDeleteLoading ? "Deleting..." : "Delete 30+ Days"}
-                      </button>
+                    
                   </span>
                 </div>
 
