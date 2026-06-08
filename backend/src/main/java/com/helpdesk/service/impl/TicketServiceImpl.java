@@ -1,5 +1,6 @@
 package com.helpdesk.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -192,4 +193,42 @@ public class TicketServiceImpl implements TicketService {
         }
         return principal;
     }
+
+    @Override
+@Transactional
+public void deleteTicket(Long ticketId) {
+
+    TicketAccessHelper.requireAdmin(requireCurrentUser());
+
+    Ticket ticket = findTicketOrThrow(ticketId);
+
+    if (ticket.getStatus() != TicketStatus.RESOLVED) {
+        throw new BadRequestException(
+                "Only resolved tickets can be deleted"
+        );
+    }
+
+    ticketRepository.delete(ticket);
+}
+@Override
+@Transactional
+public int deleteResolvedTicketsOlderThan(int days) {
+
+    TicketAccessHelper.requireAdmin(requireCurrentUser());
+
+    LocalDateTime cutoff =
+            LocalDateTime.now().minusDays(days);
+
+    List<Ticket> tickets =
+            ticketRepository.findByStatusAndUpdatedAtBefore(
+                    TicketStatus.RESOLVED,
+                    cutoff
+            );
+
+    int count = tickets.size();
+
+    ticketRepository.deleteAll(tickets);
+
+    return count;
+}
 }

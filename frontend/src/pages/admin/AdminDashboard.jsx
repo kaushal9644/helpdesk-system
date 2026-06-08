@@ -59,7 +59,8 @@ const [deleteLoading, setDeleteLoading] = useState(null);
 const [statusLoading, setStatusLoading] = useState(null);
 const [commentLoading, setCommentLoading] = useState(null);
 const [profileLoading, setProfileLoading] = useState(false);
-
+const [deleteTicketLoading, setDeleteTicketLoading] = useState(null);
+const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
   
   const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("token");
@@ -272,6 +273,65 @@ useEffect(() => {
     setStatusLoading(null);
   }
   };
+
+  // Delete Ticket
+  const deleteTicket = async (ticketId) => {
+  if (deleteTicketLoading === ticketId) return;
+
+  const confirmDelete = window.confirm(
+    "Are you sure? Only resolved tickets can be deleted."
+  );
+
+  if (!confirmDelete) return;
+
+  setDeleteTicketLoading(ticketId);
+
+  try {
+    await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/tickets/${ticketId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    alert("Ticket deleted successfully");
+    loadTickets();
+  } catch (error) {
+    console.log(error);
+    alert(error.response?.data?.message || "Failed to delete ticket");
+  } finally {
+    setDeleteTicketLoading(null);
+  }
+};
+
+const deleteResolvedOlderThan = async (days) => {
+  if (bulkDeleteLoading) return;
+
+  const confirmDelete = window.confirm(
+    `Delete all resolved tickets older than ${days} days?`
+  );
+
+  if (!confirmDelete) return;
+
+  setBulkDeleteLoading(true);
+
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/tickets/resolved/older-than/${days}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    alert(response.data.data || "Old resolved tickets deleted");
+    loadTickets();
+  } catch (error) {
+    console.log(error);
+    alert(error.response?.data?.message || "Failed to delete old tickets");
+  } finally {
+    setBulkDeleteLoading(false);
+  }
+};
 
     // comments functions
 
@@ -890,7 +950,23 @@ return (
                 <div className="adm-panel-header">
                   <Ticket size={15} color="#6366f1" />
                   <h2>All Tickets</h2>
-                  <span className="adm-count-badge">{tickets.length} total</span>
+                  <span className="adm-count-badge">{tickets.length} total
+                    <button
+                        className="adm-attach-btn"
+                        disabled={bulkDeleteLoading}
+                        onClick={() => deleteResolvedOlderThan(15)}
+                      >
+                        {bulkDeleteLoading ? "Deleting..." : "Delete 15+ Days"}
+                      </button>
+
+                      <button
+                        className="adm-attach-btn"
+                        disabled={bulkDeleteLoading}
+                        onClick={() => deleteResolvedOlderThan(30)}
+                      >
+                        {bulkDeleteLoading ? "Deleting..." : "Delete 30+ Days"}
+                      </button>
+                  </span>
                 </div>
 
                 <div className="adm-filters">
@@ -960,6 +1036,15 @@ return (
                               <option value="IN_PROGRESS">Running</option>
                               <option value="RESOLVED">Completed</option>
                             </select>
+                            {ticket.status === "RESOLVED" && (
+                            <button
+                              className="adm-del-btn"
+                              disabled={deleteTicketLoading === ticket.id}
+                              onClick={() => deleteTicket(ticket.id)}
+                            >
+                              {deleteTicketLoading === ticket.id ? "..." : <Trash2 size={14} />}
+                            </button>
+                          )}
                           </div>
 
                             

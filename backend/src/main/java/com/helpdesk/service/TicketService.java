@@ -21,4 +21,8 @@ public interface TicketService {
     TicketResponse updateTicketStatus(Long ticketId, UpdateTicketStatusRequest request);
 
     TicketResponse assignTicket(Long ticketId, AssignTicketRequest request);
+        
+    void deleteTicket(Long ticketId);
+
+    int deleteResolvedTicketsOlderThan(int days);
 }

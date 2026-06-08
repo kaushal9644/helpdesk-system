@@ -1,14 +1,12 @@
 package com.helpdesk.service.impl;
 
-import java.net.MalformedURLException;
-import java.nio.file.Paths;
+
+import java.net.URI;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +33,7 @@ import com.helpdesk.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 
 
-import java.nio.file.Path;
+
 
 
 import org.springframework.core.io.Resource;
@@ -131,39 +129,16 @@ public ResponseEntity<Resource> downloadAttachment(Long id) {
         throw new ForbiddenException("You are not allowed to access this attachment");
     }
 
-    // Build base upload directory
-    Path basePath = Paths.get(storageProperties.getUploadDir())
-            .toAbsolutePath()
-            .normalize();
+    String fileUrl = attachment.getFilePath();
 
-    // Resolve full file path
-    Path filePath = basePath.resolve(attachment.getFilePath()).normalize();
-
-    try {
-
-        Resource resource = new UrlResource(filePath.toUri());
-
-        if (!resource.exists() || !resource.isReadable()) {
-            throw new ResourceNotFoundException("File not found on disk");
-        }
-
-        // SAFE MIME handling (prevents crash like "file" issue)
-        String mimeType = attachment.getFileType();
-
-        MediaType mediaType = (mimeType != null && mimeType.contains("/"))
-                ? MediaType.parseMediaType(mimeType)
-                : MediaType.APPLICATION_OCTET_STREAM;
-
-        return ResponseEntity.ok()
-                .contentType(mediaType)
-                .header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + attachment.getOriginalFileName() + "\"")
-                .body(resource);
-
-    } catch (MalformedURLException e) {
-        throw new RuntimeException("Unable to download file", e);
+    if (fileUrl == null || fileUrl.isBlank()) {
+        throw new ResourceNotFoundException("File URL not found");
     }
+
+    return ResponseEntity
+            .status(302)
+            .location(URI.create(fileUrl))
+            .build();
 }
 
 

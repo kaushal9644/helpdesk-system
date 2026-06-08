@@ -1,14 +1,15 @@
 package com.helpdesk.service.storage;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.helpdesk.config.StorageProperties;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,45 +17,41 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LocalFileStorageService implements FileStorageService {
 
-    private final StorageProperties storageProperties;
+    private final Cloudinary cloudinary;
 
     @Override
     public StoredFile store(MultipartFile file, String ticketFolderName) {
         try {
-            Path uploadRoot = Path.of(storageProperties.getUploadDir())
-                    .toAbsolutePath()
-                    .normalize();
-
-            Path ticketFolder = uploadRoot.resolve(ticketFolderName);
-            Files.createDirectories(ticketFolder);
-
             String originalFileName = file.getOriginalFilename();
             String storedFileName = UUID.randomUUID() + "-" + originalFileName;
 
-            Path destination = ticketFolder.resolve(storedFileName).normalize();
+            Map uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "helpdesk/" + ticketFolderName,
+                            "public_id", storedFileName,
+                            "resource_type", "auto"
+                    )
+            );
 
-            file.transferTo(destination.toFile());
+            String secureUrl = uploadResult.get("secure_url").toString();
 
             return StoredFile.builder()
                     .storedFileName(storedFileName)
                     .originalFileName(originalFileName)
                     .contentType(file.getContentType())
                     .size(file.getSize())
-                    .absolutePath(destination)
-                    .relativePath(ticketFolderName + "/" + storedFileName)
+                    .absolutePath(null)
+                    .relativePath(secureUrl)
                     .build();
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file", e);
+            throw new RuntimeException("Failed to upload file to Cloudinary", e);
         }
     }
 
     @Override
     public void delete(Path absolutePath) {
-        try {
-            Files.deleteIfExists(absolutePath);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete file", e);
-        }
+        // Cloudinary delete can be added later using public_id.
     }
 }
