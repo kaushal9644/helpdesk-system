@@ -257,22 +257,31 @@ useEffect(() => {
 
   // Update Ticket Status
   const updateTicketStatus = async (ticketId, status) => {
-    setStatusLoading(ticketId);
-    try {
-      await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/tickets/${ticketId}/status`,
-        { status },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      loadTickets();
-    } catch (error) {
-      console.log(error);
-      alert("Failed to update status");
-    }
-    finally {
+  if (statusLoading === ticketId) return;
+
+  setStatusLoading(ticketId);
+
+  try {
+    await axios.patch(
+      `${import.meta.env.VITE_API_URL}/api/tickets/${ticketId}/status`,
+      { status },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setTickets((prev) =>
+      prev.map((ticket) =>
+        ticket.id === ticketId ? { ...ticket, status } : ticket
+      )
+    );
+
+    loadTickets();
+  } catch (error) {
+    console.log(error);
+    alert(error.response?.data?.message || "Failed to update status");
+  } finally {
     setStatusLoading(null);
   }
-  };
+};
 
   // Delete Ticket
   const deleteTicket = async (ticketId) => {
@@ -524,13 +533,7 @@ return (
     {tickets.length}
   </span>
 </div>
-  <button
-                        className="adm-attach-btn"
-                        disabled={bulkDeleteLoading}
-                        onClick={() => deleteResolvedOlderThan(15)}
-                      >
-                        {bulkDeleteLoading ? "Deleting..." : "Delete 15+ Days"}
-                      </button>
+ 
 
                       <button
                         className="adm-attach-btn"
@@ -1031,6 +1034,7 @@ return (
                             <select
                               className="adm-ticket-select"
                               value={ticket.status}
+                               disabled={statusLoading === ticket.id}
                               onChange={(e) => updateTicketStatus(ticket.id, e.target.value)}
                             >
 

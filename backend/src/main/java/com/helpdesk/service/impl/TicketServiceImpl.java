@@ -110,27 +110,26 @@ public class TicketServiceImpl implements TicketService {
         return DtoMapper.toTicketResponse(ticket, comments);
     }
 
-    @Override
-    @Transactional
-    public TicketResponse updateTicketStatus(Long ticketId, UpdateTicketStatusRequest request) {
-        UserPrincipal actorPrincipal = requireCurrentUser();
-        TicketAccessHelper.requireAdmin(actorPrincipal);
+   @Override
+@Transactional
+public TicketResponse updateTicketStatus(Long ticketId, UpdateTicketStatusRequest request) {
+    UserPrincipal actorPrincipal = requireCurrentUser();
+    TicketAccessHelper.requireAdmin(actorPrincipal);
 
-        Ticket ticket = ticketRepository.findByIdWithChildren(ticketId)
-        .orElseThrow(() -> new ResourceNotFoundException(
-                "Ticket not found with id: " + ticketId));
-        User actor = userRepository.findById(actorPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    Ticket ticket = findTicketOrThrow(ticketId);
 
-        ticket.setStatus(request.getStatus());
-        ticket.setUpdatedBy(actor);
+    User actor = userRepository.findById(actorPrincipal.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Ticket saved = ticketRepository.save(ticket);
+    ticket.setStatus(request.getStatus());
+    ticket.setUpdatedBy(actor);
 
-        Ticket loaded = ticketRepository.findByIdWithDetails(saved.getId()).orElse(saved);
-        List<CommentResponse> comments = loadCommentsSafely(saved.getId());
-        return DtoMapper.toTicketResponse(loaded, comments);
-    }
+    Ticket saved = ticketRepository.save(ticket);
+
+    List<CommentResponse> comments = loadCommentsSafely(saved.getId());
+
+    return DtoMapper.toTicketResponse(saved, comments);
+}
 
     @Override
     @Transactional
@@ -218,8 +217,7 @@ public int deleteResolvedTicketsOlderThan(int days) {
 
     TicketAccessHelper.requireAdmin(requireCurrentUser());
 
-    LocalDateTime cutoff =
-            LocalDateTime.now().minusDays(days);
+    LocalDateTime cutoff = LocalDateTime.now().minusDays(days);
 
     List<Ticket> tickets =
             ticketRepository.findByStatusAndUpdatedAtBefore(
@@ -230,12 +228,8 @@ public int deleteResolvedTicketsOlderThan(int days) {
     int count = tickets.size();
 
     for (Ticket ticket : tickets) {
-    Ticket loadedTicket = ticketRepository.findByIdWithChildren(ticket.getId())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                    "Ticket not found with id: " + ticket.getId()));
-
-    ticketRepository.delete(loadedTicket);
-}
+        deleteTicket(ticket.getId());
+    }
 
     return count;
 }

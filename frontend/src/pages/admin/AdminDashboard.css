@@ -21,17 +21,17 @@
 
 /* ── CSS Custom Properties ── */
 :root {
-  --bg-page:          #f0f4f8;
-  --bg-surface:       #ffffff;
-  --bg-secondary:     #f8fafc;
-  --bg-tertiary:      #eef2f7;
+  --bg-page:          #87b9eb;
+  --bg-surface:       #87b9eb;
+  --bg-secondary:     #6787a7;
+  --bg-tertiary:      #4878b3;
   --border:           rgba(0,0,0,0.09);
   --border-medium:    rgba(0,0,0,0.15);
   --text-primary:     #0f172a;
   --text-secondary:   #334155;
   --text-muted:       #64748b;
   --text-faint:       #94a3b8;
-  --accent:           #4f46e5;
+  --accent:           #5650c9;
   --accent-soft:      rgba(79,70,229,0.09);
   --accent-border:    rgba(79,70,229,0.22);
   --accent-hover:     rgba(79,70,229,0.15);
@@ -70,6 +70,7 @@
    SIDEBAR
 ═══════════════════════════════════════════════ */
 .adm-sidebar {
+  
   width: 220px;
   background: var(--bg-surface);
   border-right: 1px solid var(--border);
@@ -265,6 +266,7 @@
   transition: all 0.22s;
   position: relative;
   overflow: hidden;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .adm-stat::before {
@@ -1790,4 +1792,87 @@
 @media (max-width: 700px) {
   .db-stat-grid { grid-template-columns: 1fr 1fr; }
   .db-bot-grid  { grid-template-columns: 1fr; }
+}
+
+/* ===========================
+   FORCE DARK SIDEBAR + HEADER
+   =========================== */
+
+.adm-root{
+  background:#e2e4e7 !important;
+}
+
+.adm-sidebar{
+  background:#212e54 !important;
+  border-right:1px solid rgba(255,255,255,.08) !important;
+  box-shadow:none !important;
+}
+
+.adm-logo{
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+
+.adm-logo p,
+.adm-logo span{
+  color:#f1f5f9 !important;
+}
+
+.adm-nav-item{
+  color:#cbd5e1 !important;
+}
+
+.adm-nav-item span{
+  color:#cbd5e1 !important;
+}
+
+.adm-nav-item:hover{
+  background:#1e293b !important;
+}
+
+.adm-nav-item.active{
+  background:rgba(99,102,241,.15) !important;
+  border:1px solid rgba(99,102,241,.25) !important;
+}
+
+.adm-nav-item.active span{
+  color:#818cf8 !important;
+}
+
+.adm-topbar{
+  background:#1b2646 !important;
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+  box-shadow:none !important;
+}
+
+.adm-topbar h1,
+.adm-topbar h2,
+.adm-topbar h3,
+.adm-topbar span{
+  color:#f1f5f9 !important;
+}
+
+.adm-topbar p{
+  color:#94a3b8 !important;
+}
+
+.adm-logout{
+  border-top:1px solid rgba(255,255,255,.08) !important;
+}
+
+.adm-logout button{
+  color:#cbd5e1 !important;
+}
+
+.adm-logout button:hover{
+  background:rgba(239,68,68,.15) !important;
+  color:#ef4444 !important;
+}
+
+/* Main content light rahega */
+.adm-panel,
+.db-panel,
+.adm-ticket-card,
+.adm-stat,
+.db-stat-card{
+  background:#ffffff !important;
 }

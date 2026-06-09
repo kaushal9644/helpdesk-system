@@ -514,21 +514,21 @@ return (
         display: flex; align-items: center; gap: 10px;
         background: rgba(255,255,255,0.01);
       }
-      .adm-panel-header h2 { font-size: 15px; font-weight: 600; color: #f1f5f9; }
+      .adm-panel-header h2 { font-size: 15px; font-weight: 600; color: #000000; }
 
       /* Forms */
       .adm-form-input {
-        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-        color: #e2e8f0; padding: 12px 14px; border-radius: 10px;
+        background: rgb(241, 242, 250); border: 1px solid rgba(253, 245, 245, 0.56);
+        color: #030303; padding: 12px 14px; border-radius: 10px;
         font-size: 13px; outline: none; width: 100%; transition: all 0.2s; font-family: inherit;
       }
       .adm-form-input:focus { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.05); }
-      .adm-form-input::placeholder { color: #475569; }
-      .adm-form-input option { background: #0f172a; }
-      input[type="file"].adm-form-input { padding: 9px 14px; color: #94a3b8; font-size: 12px; }
+      .adm-form-input::placeholder { color: #171f2b; }
+      .adm-form-input option { background: #4f4e7c4b; }
+      input[type="file"].adm-form-input { padding: 9px 14px; color: #ffffff; font-size: 12px; }
       input[type="file"].adm-form-input::file-selector-button {
-        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-        color: #e2e8f0; padding: 6px 12px; border-radius: 6px; margin-right: 12px;
+        background: rgba(231, 216, 216, 0.84); border: 1px solid rgba(255,255,255,0.1);
+        color: #5c7492; padding: 6px 12px; border-radius: 6px; margin-right: 12px;
         cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 11px;
       }
 
@@ -553,42 +553,26 @@ return (
       .badge-OPEN { background: rgba(234,179,8,0.1); color: #fde047; border: 1px solid rgba(234,179,8,0.3); }
       .dot-OPEN { background: #facc15; }
       .badge-IN_PROGRESS { background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
-      .dot-IN_PROGRESS { background: #60a5fa; }
+      .dot-IN_PROGRESS { background: #000000; }
       .badge-RESOLVED { background: rgba(74,222,128,0.1); color: #86efac; border: 1px solid rgba(74,222,128,0.3); }
       .dot-RESOLVED { background: #4ade80; }
 
-      .adm-ticket-title { font-size: 14px; font-weight: 600; color: #f1f5f9; line-height: 1.4; }
-      .adm-ticket-desc { font-size: 12px; color: #94a3b8; margin-top: 6px; line-height: 1.6; }
+      .adm-ticket-title { font-size: 14px; font-weight: 600; color: #000000; line-height: 1.4; }
+      .adm-ticket-desc { font-size: 12px; color: #000000; margin-top: 6px; line-height: 1.6; }
       .adm-ticket-meta {
         display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 12px; padding-top: 12px;
-        border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: #64748b;
+        border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: #000000;
       }
       
       .adm-attach-btn {
         display: inline-flex; align-items: center; gap: 6px;
-        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-        color: #94a3b8; padding: 5px 10px; border-radius: 7px;
+        background: rgb(143, 165, 236); border: 1px solid rgb(63, 116, 216);
+        color: #000000; padding: 5px 10px; border-radius: 7px;
         font-size: 11px; cursor: pointer; transition: all 0.2s; font-family: inherit;
       }
-      .adm-attach-btn:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }
+      .adm-attach-btn:hover { background: rgb(146, 182, 223); color: #000000; }
 
-      /* Chat Box */
-      .adm-chat-box { margin-top: 16px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; overflow: hidden; }
-      .adm-chat-header { display: flex; align-items: center; gap: 7px; padding: 10px 14px; background: rgba(99,102,241,0.06); border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px; font-weight: 600; color: #6366f1; }
-      .adm-chat-count { margin-left: auto; font-size: 10px; font-weight: 600; background: rgba(99,102,241,0.2); color: #a5b4fc; padding: 1px 7px; border-radius: 20px; }
-      .adm-chat-messages { padding: 12px; display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto; }
-      .adm-chat-empty { font-size: 11px; color: #475569; text-align: center; padding: 10px 0; font-style: italic; }
-      .adm-chat-msg { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 9px; padding: 10px 12px; }
-      .adm-chat-msg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-      .adm-chat-author { font-size: 11px; font-weight: 600; color: #22d3ee; }
-      .adm-chat-time { font-size: 10px; color: #475569; }
-      .adm-chat-text { font-size: 12px; color: #cbd5e1; line-height: 1.5; }
-      .adm-chat-input-row { display: flex; align-items: center; gap: 8px; padding: 12px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); }
-      .adm-chat-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; border-radius: 9px; padding: 9px 12px; font-size: 12px; outline: none; transition: all 0.2s; font-family: inherit; }
-      .adm-chat-input:focus { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.04); }
-      .adm-chat-send { width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; color: #fff; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(99,102,241,0.35); }
-      .adm-chat-send:hover { opacity: 0.9; transform: scale(1.05); }
-      .adm-chat-send:active { transform: scale(0.95); }
+      
     `}</style>
 
     <div className="adm-root">
@@ -710,9 +694,10 @@ return (
     className="adm-add-btn"
     onClick={() => setShowAttachMenu(!showAttachMenu)}
     style={{
-      background: "rgba(99,102,241,0.15)",
+      background: "rgba(111, 113, 231, 0.15)",
       boxShadow: "none",
       border: "1px solid rgba(99,102,241,0.25)",
+      color: "#000000",
     }}
   >
     <Paperclip size={15} />
