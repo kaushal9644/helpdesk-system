@@ -71,7 +71,7 @@
 ═══════════════════════════════════════════════ */
 .adm-sidebar {
   width: 220px;
-  background: var(--bg-surface);
+  background: #0a0f1e;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -167,7 +167,7 @@
   border-radius: 10px;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: #fa0101fb;
   cursor: pointer;
   font-size: 13px;
   transition: all 0.18s;
@@ -509,6 +509,7 @@
   line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
