@@ -462,9 +462,9 @@ return (
 
       .adm-root {
         font-family: 'Inter', sans-serif;
-        background: #070c18;
+        background: #fefeff;
         min-height: 100vh;
-        color: #e2e8f0;
+        color: #ffffff;
         display: flex;
         flex-direction: column;
       }
@@ -476,7 +476,7 @@ return (
       /* Topbar */
       .adm-topbar {
         padding: 16px 32px;
-        background: rgba(10,15,30,0.85); backdrop-filter: blur(12px);
+        background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(12px);
         border-bottom: 1px solid rgba(255,255,255,0.05);
         display: flex; align-items: center; justify-content: space-between;
         position: sticky; top: 0; z-index: 10;
@@ -506,7 +506,7 @@ return (
 
       /* Panel */
       .adm-panel {
-        background: #0a0f1e; border: 1px solid rgba(255,255,255,0.07);
+        background: rgb(215, 217, 224); border: 1px solid rgba(255,255,255,0.07);
         border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
       }
       .adm-panel-header {
@@ -535,7 +535,7 @@ return (
       /* Ticket Cards */
       .adm-ticket-list { overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: 75vh; }
       .adm-ticket-card {
-        background: #0d1424; border: 1px solid rgba(255,255,255,0.07);
+        background: #f1f1f1; border: 1px solid rgba(255,255,255,0.07);
         border-radius: 14px; padding: 18px; flex-shrink: 0;
         transition: all 0.2s; position: relative; overflow: hidden;
       }
